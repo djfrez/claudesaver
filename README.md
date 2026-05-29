@@ -5,10 +5,10 @@ A Claude Code plugin that automatically saves a `resume-session.sh` script to yo
 ## Install
 
 ```bash
-claude plugin install danrez/claudesaver
+curl -fsSL https://raw.githubusercontent.com/djfrez/claudesaver/main/install.sh | bash
 ```
 
-That's it. The plugin activates immediately — no restart needed.
+That's it. The plugin activates on the next Claude session — no restart needed.
 
 ## What it does
 
