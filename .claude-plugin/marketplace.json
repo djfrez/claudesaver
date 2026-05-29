@@ -1,0 +1,19 @@
+{
+  "name": "djfrez",
+  "owner": {
+    "name": "danrez",
+    "github": "djfrez"
+  },
+  "metadata": {
+    "description": "Plugins by danrez",
+    "homepage": "https://github.com/djfrez/claudesaver"
+  },
+  "plugins": [
+    {
+      "name": "claudesaver",
+      "version": "1.0.0",
+      "source": ".",
+      "description": "Automatically save a resume-session.sh script on every session start. Run /claudesaver to manage activation and settings per folder."
+    }
+  ]
+}
