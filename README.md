@@ -1,6 +1,6 @@
 # claudesaver
 
-A Claude Code plugin that automatically saves a `resume-session.sh` script to your working directory every time a Claude session starts. Run `/claudesaver` to manage activation and settings per folder.
+A [Claude Code](https://claude.ai/code) plugin that automatically saves a `resume-session.sh` script to your working directory every time a session starts. Pick up any session exactly where you left off with a single command.
 
 ## Install
 
@@ -8,11 +8,11 @@ A Claude Code plugin that automatically saves a `resume-session.sh` script to yo
 curl -fsSL https://raw.githubusercontent.com/djfrez/claudesaver/main/install.sh | bash
 ```
 
-That's it. The plugin activates on the next Claude session — no restart needed.
+Takes effect on the next Claude session — no restart required.
 
-## What it does
+## How it works
 
-Every time you start a Claude session in a folder, claudesaver writes a `resume-session.sh` script there:
+Every time you open Claude Code in a folder, claudesaver writes a `resume-session.sh` to that directory:
 
 ```bash
 #!/bin/bash
@@ -21,22 +21,17 @@ Every time you start a Claude session in a folder, claudesaver writes a `resume-
 claude --resume abc123-def456-...
 ```
 
-To resume that session later, just run:
+To jump back into that session later:
 
 ```bash
 ./resume-session.sh
 ```
 
-## Security
+If you're in a git repo, `/resume-session.sh` is automatically appended to `.gitignore` so it's never accidentally committed.
 
-- `resume-session.sh` is automatically added to `.gitignore` (if you're in a git repo) — the file contains your session ID and should not be committed
-- The script is created with `chmod 700` (owner-execute only)
-- Config is stored at `~/.claude/claudesaver/config.json` with `chmod 600` (owner read/write only)
-- The plugin repo contains zero secrets — all user data stays in `~/.claude/claudesaver/`
+## /claudesaver — settings
 
-## Managing settings
-
-Run `/claudesaver` in any Claude session to open the settings panel:
+Run `/claudesaver` inside any Claude session to manage settings for the current folder:
 
 ```
 claudesaver status for: /your/project
@@ -46,13 +41,14 @@ claudesaver status for: /your/project
   resume-session.sh:  EXISTS  →  ./resume-session.sh
 ```
 
-Options available:
-- **Activate / Deactivate** for the current folder
-- **Enable / Disable `--dangerously-skip-permissions`** for the current folder (with explicit warning)
-- **Edit global defaults** (applies to all folders without a specific override)
-- **Reset folder to global defaults**
+Available actions:
 
-## Config
+| Action | Scope |
+|---|---|
+| Activate / Deactivate | Current folder |
+| Enable / Disable `--dangerously-skip-permissions` | Current folder (with warning) |
+| Edit global defaults | All folders |
+| Reset folder to global defaults | Current folder |
 
 Settings are stored in `~/.claude/claudesaver/config.json`:
 
@@ -61,29 +57,32 @@ Settings are stored in `~/.claude/claudesaver/config.json`:
   "enabled": true,
   "dangerouslySkipPermissions": false,
   "directories": {
-    "/path/to/special-project": {
+    "/path/to/trusted-project": {
       "dangerouslySkipPermissions": true
     }
   }
 }
 ```
 
-Global defaults apply everywhere. Directory entries override the global default for that specific path.
+Global defaults apply everywhere. Directory entries override them per path.
 
-## Default behavior
+## Security
 
-- **Enabled globally** — runs in every folder automatically
-- **`--dangerously-skip-permissions` OFF** by default — enable explicitly per folder or globally
+- **Auto-gitignore** — `/resume-session.sh` is added to `.gitignore` on creation (git repos only)
+- **Restricted permissions** — `resume-session.sh` is `chmod 700` (owner-execute only); config is `chmod 600`
+- **No secrets in the repo** — all user data lives in `~/.claude/claudesaver/`, never in the plugin repo
+- **`--dangerously-skip-permissions` is opt-in** — disabled by default; the skill requires explicit confirmation before enabling, especially globally
+- **Non-blocking hook** — all errors are caught silently; the hook never interrupts a session startup
 
 ## Requirements
 
-- Claude Code CLI
-- Python 3 (pre-installed on macOS and most Linux systems)
+- [Claude Code CLI](https://claude.ai/code)
+- Python 3 (standard on macOS and most Linux systems)
 
 ## Uninstall
 
 ```bash
-claude plugin uninstall claudesaver
+claude plugin uninstall claudesaver@djfrez
 ```
 
-This removes the plugin and its hooks. Your `~/.claude/claudesaver/config.json` is preserved (delete manually if needed).
+Removes the plugin and its hooks. Your config at `~/.claude/claudesaver/config.json` is preserved — delete it manually if you want a clean removal.
