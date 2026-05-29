@@ -12,7 +12,7 @@
     {
       "name": "claudesaver",
       "version": "1.0.0",
-      "source": ".",
+      "source": "./",
       "description": "Automatically save a resume-session.sh script on every session start. Run /claudesaver to manage activation and settings per folder."
     }
   ]
