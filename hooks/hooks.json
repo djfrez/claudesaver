@@ -1,0 +1,19 @@
+{
+  "description": "claudesaver – write resume-session.sh on every session start",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export PATH=\"/usr/bin:/usr/local/bin:/opt/homebrew/bin:$PATH\"; python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/save-session.py\"",
+            "shell": "bash",
+            "async": false,
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "claudesaver",
+  "description": "Automatically save a resume-session.sh script on every session start. Run /claudesaver to manage activation and settings per folder.",
+  "version": "1.0.0",
+  "author": {
+    "name": "danrez",
+    "github": "danrez"
+  }
+}
